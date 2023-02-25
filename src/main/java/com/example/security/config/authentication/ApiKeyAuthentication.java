@@ -11,14 +11,14 @@ import org.springframework.security.core.GrantedAuthority;
 @Getter
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class CustomAuthentication implements Authentication {
+public class ApiKeyAuthentication implements Authentication {
 
     private final String key;
     private boolean isAuthenticated;
 
     @Override
     public Object getPrincipal() {
-        return null;
+        return key;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class CustomAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return null;
+        return "user";
     }
 
     @Override

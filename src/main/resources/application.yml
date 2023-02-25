@@ -1,6 +1,6 @@
 app:
   secret:
-    key: test
+    key: secret
 
 spring:
   datasource:

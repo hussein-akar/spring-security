@@ -1,6 +1,6 @@
 package com.example.security.config.provider;
 
-import com.example.security.config.authentication.CustomAuthentication;
+import com.example.security.config.authentication.ApiKeyAuthentication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,17 +9,18 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomAuthenticationProvider implements AuthenticationProvider {
+public class ApiKeyAuthenticationProvider implements AuthenticationProvider {
 
     @Value("${app.secret.key}")
     private String secretKey;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        CustomAuthentication customAuthentication = (CustomAuthentication) authentication;
+        ApiKeyAuthentication apiKeyAuthentication = (ApiKeyAuthentication) authentication;
 
-        if (secretKey.equals(customAuthentication.getKey())) {
-            return new CustomAuthentication(secretKey, true);
+        if (secretKey.equals(apiKeyAuthentication.getKey())) {
+            apiKeyAuthentication.setAuthenticated(true);
+            return apiKeyAuthentication;
         }
 
         throw new BadCredentialsException("Invalid key provided");
@@ -27,6 +28,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return CustomAuthentication.class.equals(authentication);
+        return ApiKeyAuthentication.class.equals(authentication);
     }
 }
